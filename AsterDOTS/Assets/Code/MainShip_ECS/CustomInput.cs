@@ -15,12 +15,13 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 
-public partial class @MyControlls : IInputActionCollection2, IDisposable
-{
-    public InputActionAsset asset { get; }
-    public @MyControlls()
+    public partial class @CustomInput : IInputActionCollection2, IDisposable
     {
-        asset = InputActionAsset.FromJson(@"{
+        public InputActionAsset asset { get; }
+
+        public @CustomInput()
+        {
+            asset = InputActionAsset.FromJson(@"{
     ""name"": ""MyControlls"",
     ""maps"": [
         {
@@ -55,7 +56,7 @@ public partial class @MyControlls : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Rotation"",
+                    ""name"": ""Rotate"",
                     ""type"": ""Value"",
                     ""id"": ""62830220-74f8-4c60-9079-26329591340f"",
                     ""expectedControlType"": ""Vector2"",
@@ -215,7 +216,7 @@ public partial class @MyControlls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Rotation"",
+                    ""action"": ""Rotate"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -226,7 +227,7 @@ public partial class @MyControlls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Rotation"",
+                    ""action"": ""Rotate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -237,7 +238,7 @@ public partial class @MyControlls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Rotation"",
+                    ""action"": ""Rotate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 }
@@ -246,129 +247,158 @@ public partial class @MyControlls : IInputActionCollection2, IDisposable
     ],
     ""controlSchemes"": []
 }");
-        // SpaceShip_AM
-        m_SpaceShip_AM = asset.FindActionMap("SpaceShip_AM", throwIfNotFound: true);
-        m_SpaceShip_AM_ButtonExample = m_SpaceShip_AM.FindAction("ButtonExample", throwIfNotFound: true);
-        m_SpaceShip_AM_ValueAction = m_SpaceShip_AM.FindAction("ValueAction", throwIfNotFound: true);
-        m_SpaceShip_AM_Move = m_SpaceShip_AM.FindAction("Move", throwIfNotFound: true);
-        m_SpaceShip_AM_Rotation = m_SpaceShip_AM.FindAction("Rotation", throwIfNotFound: true);
-    }
+            // SpaceShip_AM
+            m_SpaceShip_AM = asset.FindActionMap("SpaceShip_AM", throwIfNotFound: true);
+            m_SpaceShip_AM_ButtonExample = m_SpaceShip_AM.FindAction("ButtonExample", throwIfNotFound: true);
+            m_SpaceShip_AM_ValueAction = m_SpaceShip_AM.FindAction("ValueAction", throwIfNotFound: true);
+            m_SpaceShip_AM_Move = m_SpaceShip_AM.FindAction("Move", throwIfNotFound: true);
+            m_SpaceShip_AM_Rotate = m_SpaceShip_AM.FindAction("Rotate", throwIfNotFound: true);
+        }
 
-    public void Dispose()
-    {
-        UnityEngine.Object.Destroy(asset);
-    }
-
-    public InputBinding? bindingMask
-    {
-        get => asset.bindingMask;
-        set => asset.bindingMask = value;
-    }
-
-    public ReadOnlyArray<InputDevice>? devices
-    {
-        get => asset.devices;
-        set => asset.devices = value;
-    }
-
-    public ReadOnlyArray<InputControlScheme> controlSchemes => asset.controlSchemes;
-
-    public bool Contains(InputAction action)
-    {
-        return asset.Contains(action);
-    }
-
-    public IEnumerator<InputAction> GetEnumerator()
-    {
-        return asset.GetEnumerator();
-    }
-
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return GetEnumerator();
-    }
-
-    public void Enable()
-    {
-        asset.Enable();
-    }
-
-    public void Disable()
-    {
-        asset.Disable();
-    }
-    public IEnumerable<InputBinding> bindings => asset.bindings;
-
-    public InputAction FindAction(string actionNameOrId, bool throwIfNotFound = false)
-    {
-        return asset.FindAction(actionNameOrId, throwIfNotFound);
-    }
-    public int FindBinding(InputBinding bindingMask, out InputAction action)
-    {
-        return asset.FindBinding(bindingMask, out action);
-    }
-
-    // SpaceShip_AM
-    private readonly InputActionMap m_SpaceShip_AM;
-    private ISpaceShip_AMActions m_SpaceShip_AMActionsCallbackInterface;
-    private readonly InputAction m_SpaceShip_AM_ButtonExample;
-    private readonly InputAction m_SpaceShip_AM_ValueAction;
-    private readonly InputAction m_SpaceShip_AM_Move;
-    private readonly InputAction m_SpaceShip_AM_Rotation;
-    public struct SpaceShip_AMActions
-    {
-        private @MyControlls m_Wrapper;
-        public SpaceShip_AMActions(@MyControlls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @ButtonExample => m_Wrapper.m_SpaceShip_AM_ButtonExample;
-        public InputAction @ValueAction => m_Wrapper.m_SpaceShip_AM_ValueAction;
-        public InputAction @Move => m_Wrapper.m_SpaceShip_AM_Move;
-        public InputAction @Rotation => m_Wrapper.m_SpaceShip_AM_Rotation;
-        public InputActionMap Get() { return m_Wrapper.m_SpaceShip_AM; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(SpaceShip_AMActions set) { return set.Get(); }
-        public void SetCallbacks(ISpaceShip_AMActions instance)
+        public void Dispose()
         {
-            if (m_Wrapper.m_SpaceShip_AMActionsCallbackInterface != null)
+            UnityEngine.Object.Destroy(asset);
+        }
+
+        public InputBinding? bindingMask
+        {
+            get => asset.bindingMask;
+            set => asset.bindingMask = value;
+        }
+
+        public ReadOnlyArray<InputDevice>? devices
+        {
+            get => asset.devices;
+            set => asset.devices = value;
+        }
+
+        public ReadOnlyArray<InputControlScheme> controlSchemes => asset.controlSchemes;
+
+        public bool Contains(InputAction action)
+        {
+            return asset.Contains(action);
+        }
+
+        public IEnumerator<InputAction> GetEnumerator()
+        {
+            return asset.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public void Enable()
+        {
+            asset.Enable();
+        }
+
+        public void Disable()
+        {
+            asset.Disable();
+        }
+
+        public IEnumerable<InputBinding> bindings => asset.bindings;
+
+        public InputAction FindAction(string actionNameOrId, bool throwIfNotFound = false)
+        {
+            return asset.FindAction(actionNameOrId, throwIfNotFound);
+        }
+
+        public int FindBinding(InputBinding bindingMask, out InputAction action)
+        {
+            return asset.FindBinding(bindingMask, out action);
+        }
+
+        // SpaceShip_AM
+        private readonly InputActionMap m_SpaceShip_AM;
+        private ISpaceShip_AMActions m_SpaceShip_AMActionsCallbackInterface;
+        private readonly InputAction m_SpaceShip_AM_ButtonExample;
+        private readonly InputAction m_SpaceShip_AM_ValueAction;
+        private readonly InputAction m_SpaceShip_AM_Move;
+        private readonly InputAction m_SpaceShip_AM_Rotate;
+
+        public struct SpaceShip_AMActions
+        {
+            private @CustomInput m_Wrapper;
+
+            public SpaceShip_AMActions(@CustomInput wrapper)
             {
-                @ButtonExample.started -= m_Wrapper.m_SpaceShip_AMActionsCallbackInterface.OnButtonExample;
-                @ButtonExample.performed -= m_Wrapper.m_SpaceShip_AMActionsCallbackInterface.OnButtonExample;
-                @ButtonExample.canceled -= m_Wrapper.m_SpaceShip_AMActionsCallbackInterface.OnButtonExample;
-                @ValueAction.started -= m_Wrapper.m_SpaceShip_AMActionsCallbackInterface.OnValueAction;
-                @ValueAction.performed -= m_Wrapper.m_SpaceShip_AMActionsCallbackInterface.OnValueAction;
-                @ValueAction.canceled -= m_Wrapper.m_SpaceShip_AMActionsCallbackInterface.OnValueAction;
-                @Move.started -= m_Wrapper.m_SpaceShip_AMActionsCallbackInterface.OnMove;
-                @Move.performed -= m_Wrapper.m_SpaceShip_AMActionsCallbackInterface.OnMove;
-                @Move.canceled -= m_Wrapper.m_SpaceShip_AMActionsCallbackInterface.OnMove;
-                @Rotation.started -= m_Wrapper.m_SpaceShip_AMActionsCallbackInterface.OnRotation;
-                @Rotation.performed -= m_Wrapper.m_SpaceShip_AMActionsCallbackInterface.OnRotation;
-                @Rotation.canceled -= m_Wrapper.m_SpaceShip_AMActionsCallbackInterface.OnRotation;
+                m_Wrapper = wrapper;
             }
-            m_Wrapper.m_SpaceShip_AMActionsCallbackInterface = instance;
-            if (instance != null)
+
+            public InputAction @ButtonExample => m_Wrapper.m_SpaceShip_AM_ButtonExample;
+            public InputAction @ValueAction => m_Wrapper.m_SpaceShip_AM_ValueAction;
+            public InputAction @Move => m_Wrapper.m_SpaceShip_AM_Move;
+            public InputAction @Rotate => m_Wrapper.m_SpaceShip_AM_Rotate;
+
+            public InputActionMap Get()
             {
-                @ButtonExample.started += instance.OnButtonExample;
-                @ButtonExample.performed += instance.OnButtonExample;
-                @ButtonExample.canceled += instance.OnButtonExample;
-                @ValueAction.started += instance.OnValueAction;
-                @ValueAction.performed += instance.OnValueAction;
-                @ValueAction.canceled += instance.OnValueAction;
-                @Move.started += instance.OnMove;
-                @Move.performed += instance.OnMove;
-                @Move.canceled += instance.OnMove;
-                @Rotation.started += instance.OnRotation;
-                @Rotation.performed += instance.OnRotation;
-                @Rotation.canceled += instance.OnRotation;
+                return m_Wrapper.m_SpaceShip_AM;
+            }
+
+            public void Enable()
+            {
+                Get().Enable();
+            }
+
+            public void Disable()
+            {
+                Get().Disable();
+            }
+
+            public bool enabled => Get().enabled;
+
+            public static implicit operator InputActionMap(SpaceShip_AMActions set)
+            {
+                return set.Get();
+            }
+
+            public void SetCallbacks(ISpaceShip_AMActions instance)
+            {
+                if (m_Wrapper.m_SpaceShip_AMActionsCallbackInterface != null)
+                {
+                    @ButtonExample.started -= m_Wrapper.m_SpaceShip_AMActionsCallbackInterface.OnButtonExample;
+                    @ButtonExample.performed -= m_Wrapper.m_SpaceShip_AMActionsCallbackInterface.OnButtonExample;
+                    @ButtonExample.canceled -= m_Wrapper.m_SpaceShip_AMActionsCallbackInterface.OnButtonExample;
+                    @ValueAction.started -= m_Wrapper.m_SpaceShip_AMActionsCallbackInterface.OnValueAction;
+                    @ValueAction.performed -= m_Wrapper.m_SpaceShip_AMActionsCallbackInterface.OnValueAction;
+                    @ValueAction.canceled -= m_Wrapper.m_SpaceShip_AMActionsCallbackInterface.OnValueAction;
+                    @Move.started -= m_Wrapper.m_SpaceShip_AMActionsCallbackInterface.OnMove;
+                    @Move.performed -= m_Wrapper.m_SpaceShip_AMActionsCallbackInterface.OnMove;
+                    @Move.canceled -= m_Wrapper.m_SpaceShip_AMActionsCallbackInterface.OnMove;
+                    @Rotate.started -= m_Wrapper.m_SpaceShip_AMActionsCallbackInterface.OnRotate;
+                    @Rotate.performed -= m_Wrapper.m_SpaceShip_AMActionsCallbackInterface.OnRotate;
+                    @Rotate.canceled -= m_Wrapper.m_SpaceShip_AMActionsCallbackInterface.OnRotate;
+                }
+
+                m_Wrapper.m_SpaceShip_AMActionsCallbackInterface = instance;
+                if (instance != null)
+                {
+                    @ButtonExample.started += instance.OnButtonExample;
+                    @ButtonExample.performed += instance.OnButtonExample;
+                    @ButtonExample.canceled += instance.OnButtonExample;
+                    @ValueAction.started += instance.OnValueAction;
+                    @ValueAction.performed += instance.OnValueAction;
+                    @ValueAction.canceled += instance.OnValueAction;
+                    @Move.started += instance.OnMove;
+                    @Move.performed += instance.OnMove;
+                    @Move.canceled += instance.OnMove;
+                    @Rotate.started += instance.OnRotate;
+                    @Rotate.performed += instance.OnRotate;
+                    @Rotate.canceled += instance.OnRotate;
+                }
             }
         }
+
+        public SpaceShip_AMActions @SpaceShip_AM => new SpaceShip_AMActions(this);
+
+        public interface ISpaceShip_AMActions
+        {
+            void OnButtonExample(InputAction.CallbackContext context);
+            void OnValueAction(InputAction.CallbackContext context);
+            void OnMove(InputAction.CallbackContext context);
+            void OnRotate(InputAction.CallbackContext context);
+        }
     }
-    public SpaceShip_AMActions @SpaceShip_AM => new SpaceShip_AMActions(this);
-    public interface ISpaceShip_AMActions
-    {
-        void OnButtonExample(InputAction.CallbackContext context);
-        void OnValueAction(InputAction.CallbackContext context);
-        void OnMove(InputAction.CallbackContext context);
-        void OnRotation(InputAction.CallbackContext context);
-    }
-}
