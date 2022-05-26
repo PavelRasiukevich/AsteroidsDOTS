@@ -1,4 +1,6 @@
 using Unity.Entities;
+using Unity.Jobs;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,6 +10,9 @@ public partial class InputListener : SystemBase
     private InputAction _moveInputAction;
     private InputAction _rotateInputAction;
 
+    private EntityQuery _queryKeyboardInput;
+    private ListenToInputJob _listenToInputJob;
+
     protected override void OnCreate()
     {
         _customInput = new CustomInput();
@@ -15,19 +20,17 @@ public partial class InputListener : SystemBase
 
         _moveInputAction = _customInput.SpaceShip_AM.Move;
         _rotateInputAction = _customInput.SpaceShip_AM.Rotate;
+
+        _queryKeyboardInput = GetEntityQuery(typeof(KeyboardInput));
+        _listenToInputJob = new ListenToInputJob();
     }
 
     protected override void OnUpdate()
     {
-        var m_Value = _moveInputAction.ReadValue<Vector2>().y;
-        var r_Value = _rotateInputAction.ReadValue<Vector2>().x;
+        _listenToInputJob.m_Value = _moveInputAction.ReadValue<Vector2>().y;
+        _listenToInputJob.r_Value = _rotateInputAction.ReadValue<Vector2>().x;
 
-        Entities.ForEach((ref KeyboardInput input) =>
-        {
-            input.MoveValue = m_Value;
-            input.RotationValue = r_Value;
-            
-        }).Run();
+        _listenToInputJob.Run(_queryKeyboardInput);
     }
 
     protected override void OnDestroy()

@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace Root
 {
+    [DisableAutoCreation]
     public partial class TestSystem : SystemBase
     {
         protected override void OnUpdate()
