@@ -5,10 +5,19 @@ public partial class PlayerMovement : SystemBase
 {
     private EntityQuery _playerMovementSystemQuery;
     private MovePlayerJob _movePlayerJob;
+    private EntityQueryDesc _queryDescription;
+
+    protected override void OnCreate()
+    {
+        _queryDescription = new EntityQueryDesc
+        {
+            All = new ComponentType[] { typeof(PlayerTag) }
+        };
+    }
 
     protected override void OnUpdate()
     {
-        _playerMovementSystemQuery = GetEntityQuery(typeof(PlayerTag));
+        _playerMovementSystemQuery = GetEntityQuery(_queryDescription);
 
         _movePlayerJob = new MovePlayerJob
         {
@@ -19,6 +28,6 @@ public partial class PlayerMovement : SystemBase
             DeltaTimeTypeHandler = GetComponentTypeHandle<DeltaTime>(true)
         };
 
-        Dependency = _movePlayerJob.Schedule(_playerMovementSystemQuery);
+        _movePlayerJob.Run(_playerMovementSystemQuery);
     }
 }
