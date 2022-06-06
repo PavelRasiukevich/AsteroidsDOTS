@@ -1,8 +1,14 @@
 using Unity.Entities;
-using UnityEngine.InputSystem;
+using UnityEngine;
 
 public partial class Spawner : SystemBase
 {
+    private EndInitializationEntityCommandBufferSystem _endInitializationEntityCommandBufferSystem;
+
+    protected override void OnCreate()
+    {
+        _endInitializationEntityCommandBufferSystem = World.GetOrCreateSystem<EndInitializationEntityCommandBufferSystem>();
+    }
 
     protected override void OnStartRunning()
     {
@@ -10,26 +16,36 @@ public partial class Spawner : SystemBase
 
     protected override void OnUpdate()
     {
-        if (Keyboard.current.spaceKey.wasPressedThisFrame)
+
+        var ecb = _endInitializationEntityCommandBufferSystem.CreateCommandBuffer();
+
+        var deltaTime = Time.DeltaTime;
+
+        Entities
+        .ForEach((ref Wave wave, in EnemySpawnData spawnData) =>
+    {
+
+        if (wave.TimeSinceLastFrame >= wave.Frequency)
         {
-            Entities
-            .WithStructuralChanges()
-            .ForEach((in EnemySpawnData spawnData) =>
+
+            var newEnemy = ecb.Instantiate(spawnData.Prefab);
+
+            ecb.AddComponent(newEnemy, new EnemyData
             {
+                Acceleration = spawnData.Acceleration,
+                Armor = spawnData.Armor,
+                Health = spawnData.Health
+            }); ;
 
-                for (int i = 0; i < 1; i++)
-                {
-                    var newEnemy = EntityManager.Instantiate(spawnData.Prefab);
-
-                    var enemyDataComponent = EntityManager.AddComponentData(newEnemy, new EnemyData
-                    {
-                        Acceleration = spawnData.Acceleration,
-                        Armor = spawnData.Armor,
-                        Health = spawnData.Health
-                    }); ;
-                }
-
-            }).Run();
+            wave.TimeSinceLastFrame = 0.0f;
         }
+        else
+        {
+            wave.TimeSinceLastFrame += deltaTime;
+        }
+
+    }).Run();
     }
+
 }
+

@@ -1,10 +1,11 @@
 using Unity.Entities;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 /// <summary>
 /// Просто тест 
 /// систма будет работать иначе 
-/// независя от инпута
+/// независя от инпута 
 /// </summary>
 public partial class SpecifyEnemyType : SystemBase
 {
@@ -17,20 +18,9 @@ public partial class SpecifyEnemyType : SystemBase
 
     protected override void OnUpdate()
     {
-        if (Keyboard.current.digit1Key.wasPressedThisFrame)
+        Entities.ForEach((in GlobalTime global) =>
         {
-            EntityManager.AddComponent<TankTag>(_enemySpawnDataEntity);
 
-            if (EntityManager.HasComponent<RangerTag>(_enemySpawnDataEntity))
-                EntityManager.RemoveComponent<RangerTag>(_enemySpawnDataEntity);
-        }
-
-        if (Keyboard.current.digit2Key.wasPressedThisFrame)
-        {
-            EntityManager.AddComponent<RangerTag>(_enemySpawnDataEntity);
-
-            if (EntityManager.HasComponent<TankTag>(_enemySpawnDataEntity))
-                EntityManager.RemoveComponent<TankTag>(_enemySpawnDataEntity);
-        }
+        }).Run();
     }
 }
