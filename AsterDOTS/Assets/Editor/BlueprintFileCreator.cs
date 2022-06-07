@@ -8,31 +8,56 @@ namespace Root
 {
     public class BlueprintFileCreator
     {
-        private const string fileName = "ComponentBlueprint";
+        private const string componentName = "ComponentBlueprint";
+        private const string systemName = "SystemBlueprint";
         private const string suffix = ".cs";
 
-        [MenuItem("Tools/Create/Struct")]
-        public static void Boo()
+        [MenuItem("Tools/Create/Component")]
+        public static void Component() => Perform(componentName);
+
+        [MenuItem("Tools/Create/System")]
+        public static void System() => Perform(systemName);
+
+        private static void Perform(string nameOfBlueprint)
         {
-            var selectedObjectInProjectHierarchyPath = SelectedObjectPathResolver.Resolve();
+            int numberOfMathingFilesName = GetNumberOfNameEntries(nameOfBlueprint);
+            string name = nameOfBlueprint;
 
-            var validatedPath = ValidatePath(selectedObjectInProjectHierarchyPath);
+            if (numberOfMathingFilesName > 0)
+                name = Rename(nameOfBlueprint, numberOfMathingFilesName);
 
-            var containBlueprintName = Directory.GetFiles(Application.dataPath, "*.cs", SearchOption.AllDirectories)
-                .Where(f => f.Contains(fileName)).ToArray();
+            var path = BuildPath(name);
+            var content = GetBlueprintContent(path);
 
-            if (containBlueprintName.Length > 0)
-            {
-                var nameOfTheCopy = $"{fileName}{containBlueprintName.Length}";
-                CreateFile(Path.Combine(validatedPath, $"{nameOfTheCopy}{suffix}"));
-                RefreshHierarchy();
-            }
-            else
-            {
-                CreateFile(Path.Combine(validatedPath, $"{fileName}{suffix}"));
-                RefreshHierarchy();
-            }
+            CreateBlueprint(path, content);
+            RefreshHierarchy();
         }
+
+        private static string GetBlueprintContent(string path)
+        {
+            var typeName = GetFileName(path);
+            string content = "";
+
+            if (typeName.Contains(systemName))
+            {
+                content = $"using Unity.Entities;\n\npublic partial class {typeName} : SystemBase\n{{\n\tprotected override void OnUpdate()\n\t{{\n\t}}\n}}\n";
+            }
+            else if (typeName.Contains(componentName))
+            {
+                content = $"using Unity.Entities;\n\n[GenerateAuthoringComponent]\npublic struct {typeName} : IComponentData\n{{\n}}\n";
+            }
+
+            return content;
+        }
+
+        private static string BuildPath(string name) =>
+            Path.Combine(ValidatePath(SelectedObjectPathResolver.Resolve()), $"{name}{suffix}");
+
+        private static string Rename(string name, int value) => $"{name}{value}";
+
+        private static int GetNumberOfNameEntries(string name) => Directory
+                            .GetFiles(Application.dataPath, "*.cs", SearchOption.AllDirectories)
+                            .Where(f => f.Contains(name)).ToArray().Length;
 
         private static string ValidatePath(string path)
         {
@@ -48,11 +73,10 @@ namespace Root
             return p;
         }
 
-        private static void CreateFile(string path)
+        private static void CreateBlueprint(string path, string content)
         {
             using (FileStream fs = File.Create(path))
             {
-                var content = $"using Unity.Entities;\n\n[GenerateAuthoringComponent]\npublic struct {GetFileName(path)} : IComponentData\n{{\n}}\n";
                 byte[] info = new UTF8Encoding(true).GetBytes(content);
                 fs.Write(info, 0, info.Length);
             }
