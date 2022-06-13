@@ -1,13 +1,15 @@
 ﻿using Unity.Entities;
 
-public partial struct ListenToInputJob : IJobEntity
+public partial struct ListenToInputJob : IJobEntity 
 {
-    public float m_Value;
-    public float r_Value;
+    public float MoveValue;
+    public float RotationValue;
+    public float AttackValue;
 
     public void Execute(ref KeyboardInput input)
     {
-        input.MoveValue = m_Value;
-        input.RotationValue = r_Value;
+        input.MoveValue = MoveValue;
+        input.RotationValue = RotationValue;
+        input.AttackValue = AttackValue;
     }
 }

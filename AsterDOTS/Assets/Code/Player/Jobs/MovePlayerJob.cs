@@ -5,7 +5,7 @@ using Unity.Transforms;
 
 public partial struct MovePlayerJob : IJobEntityBatch
 {
-    public ComponentTypeHandle<Translation> TranslationTypeHandler;
+    public ComponentTypeHandle<Translation> TranslationTypeHandler; 
     public ComponentTypeHandle<Rotation> RotationTypeHandler;
 
     [ReadOnly] public ComponentTypeHandle<Acceleration> AccelerationTypeHandler;

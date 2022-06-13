@@ -1,4 +1,5 @@
 using UnityEditor;
+using UnityEngine;
 
 namespace Root
 {
@@ -6,6 +7,7 @@ namespace Root
     {
         private static string OnGeneratedCSProject(string path, string content)
         {
+
             return content.Replace("<ReferenceOutputAssembly>false</ReferenceOutputAssembly>",
                 "<ReferenceOutputAssembly>true</ReferenceOutputAssembly>");
         }

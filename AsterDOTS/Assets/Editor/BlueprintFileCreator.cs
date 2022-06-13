@@ -6,20 +6,26 @@ using System.Linq;
 
 namespace Root
 {
-    public class BlueprintFileCreator
+    public sealed class BlueprintFileCreator
     {
-        private const string componentName = "ComponentBlueprint";
-        private const string systemName = "SystemBlueprint";
-        private const string suffix = ".cs";
+        private static readonly string[] configs = AssetDatabase.FindAssets("t:FileConfig");
+        private static readonly FileConfig _config = (FileConfig)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(configs[0]), typeof(FileConfig));
+
+        [MenuItem("Tools/Test")]
+        public static void T()
+        {
+            Debug.Log(_config.ComponentName);
+        }
 
         [MenuItem("Tools/Create/Component")]
-        public static void Component() => Perform(componentName);
+        public static void Component() => Perform(_config.ComponentName);
 
         [MenuItem("Tools/Create/System")]
-        public static void System() => Perform(systemName);
+        public static void System() => Perform(_config.SystemName);
 
         private static void Perform(string nameOfBlueprint)
         {
+
             int numberOfMathingFilesName = GetNumberOfNameEntries(nameOfBlueprint);
             string name = nameOfBlueprint;
 
@@ -38,20 +44,20 @@ namespace Root
             var typeName = GetFileName(path);
             string content = "";
 
-            if (typeName.Contains(systemName))
-            {
-                content = $"using Unity.Entities;\n\npublic partial class {typeName} : SystemBase\n{{\n\tprotected override void OnUpdate()\n\t{{\n\t}}\n}}\n";
-            }
-            else if (typeName.Contains(componentName))
-            {
-                content = $"using Unity.Entities;\n\n[GenerateAuthoringComponent]\npublic struct {typeName} : IComponentData\n{{\n}}\n";
-            }
+            if (typeName.Contains(_config.SystemName))
+                content = $"using Unity.Entities;\n\npublic partial class {typeName} : SystemBase\n{{\n\tprotected override void OnUpdate()\n\t{{\n\t}}\n}}";
+
+            else if (typeName.Contains(_config.ComponentName))
+                content = $"using Unity.Entities;\n\n[GenerateAuthoringComponent]\npublic struct {typeName} : IComponentData\n{{\n}}";
+
+            content.TrimStart(' ');
+            content.TrimEnd(' ');
 
             return content;
         }
 
         private static string BuildPath(string name) =>
-            Path.Combine(ValidatePath(SelectedObjectPathResolver.Resolve()), $"{name}{suffix}");
+            Path.Combine(ValidatePath(SelectedObjectPathResolver.Resolve()), $"{name}{_config.Suffix}");
 
         private static string Rename(string name, int value) => $"{name}{value}";
 
@@ -61,25 +67,17 @@ namespace Root
 
         private static string ValidatePath(string path)
         {
-            var p = path;
-
             if (Path.GetExtension(path).Length > 0)
-            {
-                var t = Directory.GetParent(path);
                 Selection.activeObject = null;
-                p = t.FullName;
-            }
 
-            return p;
+            return Directory.GetParent(path).FullName;
         }
 
         private static void CreateBlueprint(string path, string content)
         {
-            using (FileStream fs = File.Create(path))
-            {
-                byte[] info = new UTF8Encoding(true).GetBytes(content);
-                fs.Write(info, 0, info.Length);
-            }
+            using FileStream fs = File.Create(path);
+            byte[] info = new UTF8Encoding(true).GetBytes(content);
+            fs.Write(info, 0, info.Length);
         }
 
         private static string GetFileName(string path) => Path.GetFileNameWithoutExtension(path);
