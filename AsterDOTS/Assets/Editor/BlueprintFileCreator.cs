@@ -14,7 +14,8 @@ namespace Root
         [MenuItem("Tools/Test")]
         public static void T()
         {
-            Debug.Log(_config.ComponentName);
+            //Debug.Log(_config.ComponentName);
+            //Debug.Log(SelectedObjectPathResolver.Resolve());
         }
 
         [MenuItem("Tools/Create/Component")]
@@ -62,15 +63,13 @@ namespace Root
         private static string Rename(string name, int value) => $"{name}{value}";
 
         private static int GetNumberOfNameEntries(string name) => Directory
-                            .GetFiles(Application.dataPath, "*.cs", SearchOption.AllDirectories)
+                            .GetFiles(Application.dataPath, _config.Suffix, SearchOption.AllDirectories)
                             .Where(f => f.Contains(name)).ToArray().Length;
 
         private static string ValidatePath(string path)
         {
-            if (Path.GetExtension(path).Length > 0)
-                Selection.activeObject = null;
-
-            return Directory.GetParent(path).FullName;
+            Selection.activeObject = null;
+            return Path.GetExtension(path).Length > 0 ? Directory.GetParent(path).FullName : path;
         }
 
         private static void CreateBlueprint(string path, string content)

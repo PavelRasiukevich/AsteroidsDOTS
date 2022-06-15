@@ -1,8 +1,8 @@
+using System;
 using Unity.Entities;
 
 public partial class BulletDataInitializer : SystemBase
 {
-
     private BulletDataInitializeJob _bulletDataInitializeJob;
 
     public partial struct BulletDataInitializeJob : IJobEntity
@@ -28,9 +28,9 @@ public partial class BulletDataInitializer : SystemBase
 
     protected override void OnUpdate()
     {
-        _bulletDataInitializeJob.LifeDuration = 5;
-        _bulletDataInitializeJob.Damage = 10;
-        _bulletDataInitializeJob.TravelSpeed = 7;
+        _bulletDataInitializeJob.LifeDuration = new Random().Next(1, 4);
+        _bulletDataInitializeJob.Damage = new Random().Next(1, 25);
+        _bulletDataInitializeJob.TravelSpeed = 10;
 
         _bulletDataInitializeJob.Run();
     }

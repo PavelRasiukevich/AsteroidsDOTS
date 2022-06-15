@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a3bec62985968c4b934d4a5203cad51, type: 3}
   m_Name: Config
   m_EditorClassIdentifier: 
-  ComponentName: ComponentBlueprint
-  SystemName: SystemBlueprint
-  Suffix: .cs
+  <ComponentName>k__BackingField: ComponentBlueprint
+  <SystemName>k__BackingField: SystemBlueprint
+  <Suffix>k__BackingField: .cs

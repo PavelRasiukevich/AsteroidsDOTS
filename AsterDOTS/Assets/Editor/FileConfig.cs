@@ -2,11 +2,13 @@ using UnityEngine;
 
 namespace Root
 {
-    [CreateAssetMenu(fileName = "Names", menuName = "File Name SO")]
+    [CreateAssetMenu(fileName = "Config", menuName = "Blueprint Config")]
     public class FileConfig : ScriptableObject
     {
-        public string ComponentName;
-        public string SystemName;
-        public string Suffix;
+        [field: SerializeField] public string ComponentName { get; private set; }
+
+        [field: SerializeField] public string SystemName { get; private set; }
+
+        [field: SerializeField] public string Suffix { get; private set; }
     }
 }
