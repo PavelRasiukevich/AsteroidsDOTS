@@ -9,7 +9,5 @@ public partial struct ListenToInputJob : IJobEntity
     public void Execute(ref KeyboardInput input)
     {
         input.MoveValue = MoveValue;
-        input.RotationValue = RotationValue;
-        input.AttackValue = AttackValue;
     }
 }

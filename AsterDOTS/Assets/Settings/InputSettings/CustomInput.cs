@@ -35,24 +35,6 @@ public partial class @CustomInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""Rotate"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""62830220-74f8-4c60-9079-26329591340f"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""Attack"",
-                    ""type"": ""Button"",
-                    ""id"": ""2449f165-7fb7-45b1-930b-ff593dcd0308"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -68,70 +50,26 @@ public partial class @CustomInput : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""up"",
-                    ""id"": ""e3080d4c-9647-4db7-a90e-289ee276173e"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""eccf4062-dd9c-4ad2-92a2-7bd05b0bf3e7"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""2D Vector"",
-                    ""id"": ""ce13894b-b488-4b9b-90f7-f7579853f06d"",
-                    ""path"": ""2DVector"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Rotate"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
                     ""name"": ""left"",
-                    ""id"": ""aabbd38a-edef-46b1-8fb0-2278526cfeec"",
+                    ""id"": ""e3080d4c-9647-4db7-a90e-289ee276173e"",
                     ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Rotate"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""right"",
-                    ""id"": ""d5f72f41-22f6-45e7-b58e-f382f9d8667f"",
+                    ""id"": ""eccf4062-dd9c-4ad2-92a2-7bd05b0bf3e7"",
                     ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Rotate"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""988cb8ec-7f54-4190-8a64-137f62b5eaeb"",
-                    ""path"": ""<Keyboard>/space"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Attack"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -141,8 +79,6 @@ public partial class @CustomInput : IInputActionCollection2, IDisposable
         // SpaceShip_AM
         m_SpaceShip_AM = asset.FindActionMap("SpaceShip_AM", throwIfNotFound: true);
         m_SpaceShip_AM_Move = m_SpaceShip_AM.FindAction("Move", throwIfNotFound: true);
-        m_SpaceShip_AM_Rotate = m_SpaceShip_AM.FindAction("Rotate", throwIfNotFound: true);
-        m_SpaceShip_AM_Attack = m_SpaceShip_AM.FindAction("Attack", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -203,15 +139,11 @@ public partial class @CustomInput : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_SpaceShip_AM;
     private ISpaceShip_AMActions m_SpaceShip_AMActionsCallbackInterface;
     private readonly InputAction m_SpaceShip_AM_Move;
-    private readonly InputAction m_SpaceShip_AM_Rotate;
-    private readonly InputAction m_SpaceShip_AM_Attack;
     public struct SpaceShip_AMActions
     {
         private @CustomInput m_Wrapper;
         public SpaceShip_AMActions(@CustomInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_SpaceShip_AM_Move;
-        public InputAction @Rotate => m_Wrapper.m_SpaceShip_AM_Rotate;
-        public InputAction @Attack => m_Wrapper.m_SpaceShip_AM_Attack;
         public InputActionMap Get() { return m_Wrapper.m_SpaceShip_AM; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -224,12 +156,6 @@ public partial class @CustomInput : IInputActionCollection2, IDisposable
                 @Move.started -= m_Wrapper.m_SpaceShip_AMActionsCallbackInterface.OnMove;
                 @Move.performed -= m_Wrapper.m_SpaceShip_AMActionsCallbackInterface.OnMove;
                 @Move.canceled -= m_Wrapper.m_SpaceShip_AMActionsCallbackInterface.OnMove;
-                @Rotate.started -= m_Wrapper.m_SpaceShip_AMActionsCallbackInterface.OnRotate;
-                @Rotate.performed -= m_Wrapper.m_SpaceShip_AMActionsCallbackInterface.OnRotate;
-                @Rotate.canceled -= m_Wrapper.m_SpaceShip_AMActionsCallbackInterface.OnRotate;
-                @Attack.started -= m_Wrapper.m_SpaceShip_AMActionsCallbackInterface.OnAttack;
-                @Attack.performed -= m_Wrapper.m_SpaceShip_AMActionsCallbackInterface.OnAttack;
-                @Attack.canceled -= m_Wrapper.m_SpaceShip_AMActionsCallbackInterface.OnAttack;
             }
             m_Wrapper.m_SpaceShip_AMActionsCallbackInterface = instance;
             if (instance != null)
@@ -237,12 +163,6 @@ public partial class @CustomInput : IInputActionCollection2, IDisposable
                 @Move.started += instance.OnMove;
                 @Move.performed += instance.OnMove;
                 @Move.canceled += instance.OnMove;
-                @Rotate.started += instance.OnRotate;
-                @Rotate.performed += instance.OnRotate;
-                @Rotate.canceled += instance.OnRotate;
-                @Attack.started += instance.OnAttack;
-                @Attack.performed += instance.OnAttack;
-                @Attack.canceled += instance.OnAttack;
             }
         }
     }
@@ -250,7 +170,5 @@ public partial class @CustomInput : IInputActionCollection2, IDisposable
     public interface ISpaceShip_AMActions
     {
         void OnMove(InputAction.CallbackContext context);
-        void OnRotate(InputAction.CallbackContext context);
-        void OnAttack(InputAction.CallbackContext context);
     }
 }

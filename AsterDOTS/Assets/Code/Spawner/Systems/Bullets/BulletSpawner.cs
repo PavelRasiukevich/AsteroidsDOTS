@@ -4,6 +4,8 @@ using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
 
+//Enable when make camera work
+[DisableAutoCreation]
 public partial class BulletSpawner : SystemBase
 {
     private EndInitializationEntityCommandBufferSystem _endInitializationEntityCommandBufferSystem;
@@ -29,7 +31,7 @@ public partial class BulletSpawner : SystemBase
 
         var ecb = _endInitializationEntityCommandBufferSystem.CreateCommandBuffer();
 
-        NativeArray<Translation> na = new NativeArray<Translation>(1, Allocator.Temp);
+        NativeArray<Translation> na = new(1, Allocator.Temp);
 
         Translation tr = new();
 

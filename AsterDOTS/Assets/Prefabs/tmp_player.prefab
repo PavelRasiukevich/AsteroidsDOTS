@@ -108,7 +108,6 @@ GameObject:
   - component: {fileID: 6896604279894480695}
   - component: {fileID: 417039237752968081}
   - component: {fileID: 639868816}
-  - component: {fileID: 639868817}
   - component: {fileID: 639868818}
   - component: {fileID: 639868820}
   - component: {fileID: 974338871523780125}
@@ -127,7 +126,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1713898053794473239}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.177848, y: -8.099994, z: 19.06893}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1798474016}
@@ -210,19 +209,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MoveAccelerationValue: 1
   RotateAccelerationValue: 1
---- !u!114 &639868817
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1713898053794473239}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea7d7495833204790ba1d3a8755397f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ConversionMode: 0
 --- !u!114 &639868818
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -235,7 +221,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6f9410921b2db94e91747966fefa1df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RotationValue: 0
   MoveValue: 0
 --- !u!114 &639868820
 MonoBehaviour:

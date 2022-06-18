@@ -21,7 +21,6 @@ public partial class PlayerMovement : SystemBase
 
         _movePlayerJob = new MovePlayerJob
         {
-            RotationTypeHandler = GetComponentTypeHandle<Rotation>(false),
             TranslationTypeHandler = GetComponentTypeHandle<Translation>(false),
             AccelerationTypeHandler = GetComponentTypeHandle<Acceleration>(true),
             KeyboardInputTypeHandler = GetComponentTypeHandle<KeyboardInput>(true),
